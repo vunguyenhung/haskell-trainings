@@ -539,9 +539,6 @@ combine (a1, a2) (b1, b2) = (a1 + b1, a2 + b2)
 pairScore :: (Hand, Hand) -> Score
 pairScore (h1, h2) = computeScore h1 h2
 
--- how to get the hands? 
--- f = a -> a -> a => player1Score player2Score -> total?
--- Score -> Score -> Score
 score :: [Hand] -> [Hand] -> Score
 score player1Hands player2Hands = foldl1 combine $ map pairScore $ zip player1Hands player2Hands
 

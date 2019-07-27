@@ -143,6 +143,12 @@ test name expected actual = do
 testI :: String -> Int -> Int -> IO Bool
 testI = test
 
+
+-- temp
+factorialSequence :: Integer -> Integer
+factorialSequence n = foldl (*) 1 [1..n]
+
+
 -- main
 
 tests :: [Section] -> [IO Bool]
@@ -159,8 +165,11 @@ tests sections =
                , test "divide    9 2"  4.5               $ C.divide 9 2
                , test "divide    8 4"  2                 $ C.divide 8 4
                , test "factorial 30"   (product [1..30]) $ C.factorial 30
+               , test "factorialSequence 30"   (product [1..30]) $ factorialSequence 30
                , test "gcd       12 4" 4                 $ C.gcd 12 4
                , test "gcd       17 7" 1                 $ C.gcd 17 7
+               , test "gcdGuard       12 4" 4                 $ C.gcdGuard 12 4
+               , test "gcdGuard       17 7" 1                 $ C.gcdGuard 17 7
                ]
              Section 2 ->
                [ display "#### Section 2"
@@ -172,6 +181,8 @@ tests sections =
                  $ C.timeDistance (C.Minutes 99) (C.Minutes 47)
                , test "pointDistance (1, 1) (1, 3)" 2 $ C.pointDistance (1, 1) (1, 3)
                , test "pointDistance (3, 4) (0, 0)" 5 $ C.pointDistance (3, 4) (0, 0)
+               , test "pointDistanceOp (1, 1) (1, 3)" 2 $ C.pointDistanceOp (1, 1) (1, 3)
+               , test "pointDistanceOp (3, 4) (0, 0)" 5 $ C.pointDistanceOp (3, 4) (0, 0)
                ]
              Section 3 ->
                [ display "#### Section 3"
@@ -184,6 +195,8 @@ tests sections =
                [ display "#### Section 4"
                , testI "length []"                   0         $ C.length []
                , testI "length [8,0,6]"              3         $ C.length [8,0,6]
+               , testI "lengthF []"                   0         $ C.lengthF []
+               , testI "lengthF [8,0,6]"              3         $ C.lengthF [8,0,6]
                , test  "and    []"                   True      $ C.and []
                , test  "and    [True]"               True      $ C.and [True]
                , test  "and    [False]"              False     $ C.and [False]
@@ -192,6 +205,14 @@ tests sections =
                , test  "and    [False, True]"        False     $ C.and [False, True]
                , test  "and    [False, False]"       False     $ C.and [False, False]
                , test  "and    [True, True, True]"   True      $ C.and [True, True, True]
+               , test  "andF    []"                   True      $ C.andF []
+               , test  "andF    [True]"               True      $ C.andF [True]
+               , test  "andF    [False]"              False     $ C.andF [False]
+               , test  "andF    [True,  True]"        True      $ C.andF [True,  True]
+               , test  "andF    [True,  False]"       False     $ C.andF [True,  False]
+               , test  "andF    [False, True]"        False     $ C.andF [False, True]
+               , test  "andF    [False, False]"       False     $ C.andF [False, False]
+               , test  "andF    [True, True, True]"   True      $ C.andF [True, True, True]
                , test  "or     []"                   False     $ C.or []
                , test  "or     [True]"               True      $ C.or [True]
                , test  "or     [False]"              False     $ C.or [False]
@@ -200,9 +221,20 @@ tests sections =
                , test  "or     [False, True]"        True      $ C.or [False, True]
                , test  "or     [False, False]"       False     $ C.or [False, False]
                , test  "or     [False, False, True]" True      $ C.or [False, False, True]
+               , test  "orF     []"                   False     $ C.orF []
+               , test  "orF     [True]"               True      $ C.orF [True]
+               , test  "orF     [False]"              False     $ C.orF [False]
+               , test  "orF     [True,  True]"        True      $ C.orF [True,  True]
+               , test  "orF     [True,  False]"       True      $ C.orF [True,  False]
+               , test  "orF     [False, True]"        True      $ C.orF [False, True]
+               , test  "orF     [False, False]"       False     $ C.orF [False, False]
+               , test  "orF     [False, False, True]" True      $ C.orF [False, False, True]
                , test  "[8,0] ++ [   ]"              [8,0]     $ [8,0] C.++ []
                , test  "[   ] ++ [6,4]"              [6,4]     $ [   ] C.++ [6,4]
                , test  "[8,0] ++ [6,4]"              [8,0,6,4] $ [8,0] C.++ [6,4]
+               , test  "[8,0] +++ [   ]"              [8,0]     $ [8,0] C.+++ []
+               , test  "[   ] +++ [6,4]"              [6,4]     $ [   ] C.+++ [6,4]
+               , test  "[8,0] +++ [6,4]"              [8,0,6,4] $ [8,0] C.+++ [6,4]
                ]
              Section 5 ->
                [ display "#### Section 5"
@@ -227,6 +259,8 @@ tests sections =
                , testI "fromMaybe 0 Nothing"    0        $ C.fromMaybe 0 Nothing
                , testI "maybe 0 (+2) (Just 40)" 42       $ C.maybe 0 (+2) (Just 40)
                , testI "maybe 0 (+2) Nothing"   0        $ C.maybe 0 (+2) Nothing
+               , test "score"   (3, 0)        $ C.score  [C.Rock, C.Scissors, C.Paper] [C.Scissors, C.Paper, C.Rock]
+               , test "score"   (2, 1)        $ C.score  [C.Paper, C.Rock, C.Rock] [C.Scissors, C.Scissors, C.Scissors]
                ]
              Section unexpected ->
                [ display $ "Unexpected section requested: " ++ show unexpected

@@ -144,7 +144,6 @@ testI :: String -> Int -> Int -> IO Bool
 testI = test
 
 
--- temp
 factorialSequence :: Integer -> Integer
 factorialSequence n = foldl (*) 1 [1..n]
 

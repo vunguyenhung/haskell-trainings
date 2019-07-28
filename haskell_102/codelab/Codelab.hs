@@ -103,8 +103,8 @@ data Color = Red     -- this is a constructor, of type Color
 
 allColors :: [Color]
 allColors = [minColor .. maxColor] -- enumFromTo minColor maxColor
-  where minColor = Red
-        maxColor = Magenta
+  where minColor = minBound
+        maxColor = maxBound
 
 
 
